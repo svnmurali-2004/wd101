@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+<body>
+    <style>
+        #main{
+            background-image: url('https://gboptimist.com/stor-swrjs3/2019/07/JSN.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 50% 100%;
+        }
+    </style>
+    <main id="main" class="flex items-center bg-gray-100  justify-center h-screen">
+        <form>
+            <div class="bg-white rounded border-solid w-96 p-6 shadow-sm border-black bg-white bg-opacity-1">
+                <h1 class=" text-xl text-center italic font-semibold">Registration Form</h1>
+            
+                <label for="name" >enter name </label>
+                <input type="text" class=" bg-gray-100 text-gray-500 px-1 w-full" id="name" name="name" placeholder="enter the name" value="" required>
+                <label for="email" >Email</label>
+                <input type="email" class=" bg-gray-100 text-gray-500 px-1 w-full" id="email" name="email" placeholder="Email" value="" required>
+                <label for="Password" >Password</label>
+                <input type="password" class=" bg-gray-100 text-gray-500 px-1 w-full" id="password" name="password" placeholder="password" value="" required>
+                <label for="date" >Date Of Birth</label>
+                <input type="date" class=" bg-gray-100 text-gray-500 px-1 w-full" id="date" name="date" placeholder="date" value="" required>
+                <input type="checkbox" id="checkbox" >
+                <label for="checkbox">agree terms and condions</label>
+                <input class=" place-self-center w-full rounded text-center bg-blue-500 font-semibold text-white hover:bg-blue-600 action:bg-green-600" type="submit" id="submit" name="submit">
+                
+            </div>  
+        </form>
+        
+    </main>
+    <footer>
+        <div id="table" >
+            hello
+        </div>
+        
+    </footer>
+    
+    
+    <script>
+        console.log("hello")
+        const submit=document.getElementById('submit');
+        const date=document.getElementById('date');
+        console.log(date.value);
+        date.addEventListener('input',()=>validate(date));
+        const storage=element=>{
+            element.preventDefault()
+            const name =document.getElementById('name').value
+            const email =document.getElementById('email').value
+            const password=document.getElementById('password').value
+            const date1 =document.getElementById('date').value
+            const checkbox=document.getElementById('checkbox').checked
+            const data={name:name,email:email,password:password ,date:date1,checkbox:checkbox}
+            localStorage.setItem('buffer',JSON.stringify(data));
+            let items=localStorage.getItem('buffer')
+            let items1=JSON.parse(items)
+            console.log(localStorage.getItem('buffer'))
+            displaydata()
+        }
+        submit.addEventListener('click',storage);
+        
+        function validate(date){
+            let dob = new Date(date.value);
+  
+            let today = new Date();
+ 
+            let age = today.getFullYear() - dob.getFullYear();
+  
+            if (today.getMonth() < dob.getMonth() || (today.getMonth() == dob.getMonth() && today.getDate() < dob.getDate())) {
+              age--;
+            }
+            console.log(age)
+            console.log(age<18||age>55)
+            if (age<18||age>55){
+                date.setCustomValidity("notright age should be with in 18 and 55");
+                date.reportValidity();
+            }
+            }
+        function retrivedata(){
+            let data=localStorage.getItem('buffer')
+            if (data){
+                data=[JSON.parse(data)]
+                
+            }else{
+                data=[]
+               
+            }
+            return data
+        }
+        function displaydata(){
+            const data=retrivedata()
+            console.log("data received",data)
+            let tablerow=data.map(item=>{
+                console.log("from dis")
+                const namecell= "<td>"+item.name+"</td>"
+                const emailcell="<td>"+item.email+"</td>"
+                const passwordcell="<td>"+item.password+"</td>"
+                const date="<td>"+item.date+"</td>"
+                const accept="<td>"+ (item.checkbox ? "Accepted" : "Not Accepted")+"</td>"
+                return "<tr>"+namecell+emailcell+passwordcell+date+accept+"</tr>"
+            }).join("\n");
+            
+            let tableheader='<table class="table-auto"><tr><th>name</th><th>email</th><th>password</th><th>dob</th><th>terms</th></tr>'+tablerow+'</table>'
+            let table=document.getElementById('table')
+            table.innerHTML=tableheader
+            console.log('data from dispaly function')
+            console.log(data)
+        }
+
+    </script>
+</body>
+</html>

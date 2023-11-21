@@ -19,7 +19,7 @@ form.addEventListener('submit', (event) => {
     const age = currentYear - dob.getFullYear();
 
     // Validate age to accept users between 18 and 55 years old
-    if (!(age > 18 && age < 55)){
+    if (!(age >=18 || age <=55)){
         alert('Age should be between 18 and 55.');
         return;
     }
